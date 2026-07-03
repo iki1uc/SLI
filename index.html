@@ -1,1 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>CALL Universal</title>
+</head>
+
+<body>
+
+<h1>CALL Universal Router</h1>
+<input id="txt" placeholder="Input">
+<button id="run">CALL</button>
+<pre id="out"></pre>
+
+<script type="module">
+  import { CALL } from "./call.js";
+
+  document.getElementById("run").addEventListener("click", () => {
+    const msg = document.getElementById("txt").value;
+    const out = CALL(msg);
+    document.getElementById("out").textContent =
+      JSON.stringify(out, null, 2);
+  });
+</script>
+
+</body>
+</html>
 
