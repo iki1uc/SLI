@@ -1,85 +1,36 @@
-# CALL — Slave-Modul für Pipeline 3 und Pipeline 6
+# SLI — System Load Interface (CALL‑Übernahme)
 
-CALL ist ein neutrales Hardware-Steuermodul.
-Es erzeugt keine eigenen Werte, sondern nimmt Aufgaben entgegen
-und legt sie automatisch in Pipeline 3 oder Pipeline 6 ab.
+SLI ist ein neutrales RESPO-Modul im NC-System und übernimmt alle
+ursprünglichen Aufgaben des CALL-Moduls. SLI bleibt vollständig
+neutral, erzeugt keine eigenen Werte und trifft keine eigenen
+Entscheidungen.
 
-CALL arbeitet als Slave-Modul:
+SLI ersetzt CALL funktional, behält aber seinen eigenen Namen.
+SLI führt alle Ablage- und Übergabeprozesse aus, die zuvor von
+CALL ausgeführt wurden.
 
-- CALL empfängt Aufgaben
-- CALL klassifiziert Aufgaben
-- CALL legt Aufgaben in Pipeline 3 oder Pipeline 6 ab
-- CALL führt keine eigenen Berechnungen aus
+SLI dient als System Load Interface für:
 
-CALL ist vollständig kompatibel mit:
+- Pipeline 3 Ablagen
+- Pipeline 6 Ablagen
+- neutrale Aufgabenverteilung
+- interne RESPO-Abläufe
+- zukünftige Erweiterungen
 
-- RAM
-- CPU
-- GPU
-- ROM
-- PORT
-- Pipeline 3
-- Pipeline 6
+## Funktion
 
-## Pipeline-Zuordnung
+SLI führt drei grundlegende Aufgaben aus:
 
-CALL nutzt zwei feste Ablagepunkte:
+1. Aufgaben entgegennehmen  
+2. Aufgaben klassifizieren  
+3. Aufgaben in Pipeline 3 oder Pipeline 6 ablegen  
 
-### Pipeline 3
-Pipeline 3 ist die Hardware-Ableitungsebene:
+SLI überschreibt keine Werte und führt keine eigenen Berechnungen aus.
+SLI bleibt vollständig neutral.
 
-- RAM → BLOCK / CACHE / FLOW / STATE
-- CPU → LOAD / CYCLE / ENERGY / STATE
-- GPU → FRONT / DEPTH / FLOW / CORE
-- ROM → READ / WRITE / HOLD / BENCH
-- PORT → MA³-Verbindung
+## Integration
 
-CALL legt Hardware-Aufgaben automatisch in Pipeline 3 ab.
+SLI kann an MXU oder andere Module angehängt werden:
 
-### Pipeline 6
-Pipeline 6 ist die erweiterte Ableitungsebene:
-
-- komplexe Aufgaben
-- externe Aufgaben
-- PORT CONNECT Aufgaben
-- MA³-Ableitungen
-- BENCH-Weiterleitungen
-
-CALL legt erweiterte Aufgaben automatisch in Pipeline 6 ab.
-
-## Slave-Funktion
-
-CALL arbeitet als Slave:
-
-CALL = {
-  task: <eingehende Aufgabe>,
-  pipe: <3 oder 6>,
-  state: <wartend / abgelegt>
-}
-
-CALL entscheidet nicht selbst.
-CALL führt nicht selbst aus.
-CALL legt nur ab.
-
-## Sicherheit
-
-CALL ist sicher, weil:
-
-- CALL keine eigenen Werte erzeugt
-- CALL keine eigenen Entscheidungen trifft
-- CALL nur Ablagepunkte nutzt
-- CALL keine Rückführung erlaubt
-- CALL keine Rekonstruktion erlaubt
-
-CALL ist ein reines Übergangsmodul.
-
-## Ergebnis
-
-CALL kann genutzt werden,
-aber nicht missbraucht werden.
-
-CALL legt alle Aufgaben sauber in Pipeline 3 oder Pipeline 6 ab.
-CALL bleibt neutral.
-CALL bleibt stabil.
-CALL bleibt regelkonform.
-
+```js
+SLI.attach(MXU);
